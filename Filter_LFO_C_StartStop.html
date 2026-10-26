@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <title> Start Stop Fun</title>
+    </head>
+    <body>
+        <button id = "Start1">Start1</button>
+        <button id = "Stop1">Stop1</button>
+
+         <script>
+const ctx = new AudioContext();
+
+const osc1Gain = new GainNode(ctx);
+osc1Gain.gain.value = 0.1;
+
+let osc1, mod
+document.querySelector("#Start1").onclick = () =>
+
+{
+
+//make oscillator
+osc1 = new OscillatorNode(ctx);
+osc1.frequency.value = 110;
+osc1.type = "sawtooth";
+
+//const osc1Gain = new GainNode(ctx);
+//osc1Gain.gain.value = 0.1;
+
+//make filter
+
+const filter = new BiquadFilterNode(ctx);
+filter.type = "lowpass";
+filter.frequency.value = 6600;
+filter.Q.value = 20;
+
+//make LFO which changes filter cutoff
+
+mod = new OscillatorNode(ctx);
+mod.frequency.value = 0.125;
+mod.type = "sine";
+
+const modGain = new GainNode(ctx);
+modGain.gain.value = 4400;
+
+mod.connect(modGain);
+modGain.connect(filter.frequency);
+osc1.connect(osc1Gain);
+osc1Gain.connect(filter)
+filter.connect(ctx.destination);
+
+
+
+
+osc1.start();
+mod.start();
+
+}
+
+document.querySelector("#Stop1").onclick = () =>
+
+{
+
+osc1.stop();
+mod.stop();
+
+}
+
+
+
+             </script>
+    
+    </body>
+</html>

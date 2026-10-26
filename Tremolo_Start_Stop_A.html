@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <title> Start Stop Fun</title>
+    </head>
+    <body>
+        <button id = "Start1">Start1</button>
+        <button id = "Stop1">Stop1</button>
+
+         <script>
+ 
+const ctx = new AudioContext();
+
+let osc1, mod
+document.querySelector("#Start1").onclick = () =>
+
+{
+ 
+
+osc1 = new OscillatorNode(ctx);
+osc1.frequency.value = 220;
+osc1.type = "triangle";
+
+const osc1Gain = new GainNode(ctx);
+osc1Gain.gain.value = 0.1;
+
+osc1.connect(osc1Gain);
+osc1Gain.connect(ctx.destination);
+
+mod = new OscillatorNode(ctx);
+mod.frequency.value = 2; // what happens if you push this above 20Hz?
+
+const modGain = new GainNode(ctx);
+modGain.gain.value = 1; 
+
+mod.connect(modGain);
+modGain.connect(osc1Gain.gain);
+
+osc1.start();
+mod.start();
+
+}
+
+document.querySelector("#Stop1").onclick = () =>
+
+{
+
+osc1.stop();
+mod.stop();
+
+}
+
+
+</script>
+
+</body>
+
+</html>
